@@ -1,0 +1,23 @@
+{
+    "name": "Gif-Them",
+    "description": "Graphic design and online marketing consulting",
+    "dependencies": {
+        "gulp": "^3.9.0",
+        "gulp-compass": "^2.1.0",
+        "gulp-rename": "1.2.2",
+        "gulp-minify-css": "^1.2.1",
+        "gulp-useref" : "*",
+        "gulp-if": "*",
+        "gulp-uglify": "^1.5.1",
+
+        "gulp-rimraf": "*"
+    },
+    "devDependencies": {
+        "gulp-watch": "^4.3.5",
+        "browser-sync": "^2.2.1"
+    },
+    "engines": {
+        "node": ">=0.10.0",
+        "npm": ">=1.2.10"
+    }
+}

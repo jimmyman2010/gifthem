@@ -1,0 +1,121 @@
+@import "compass/css3";
+@import "compass/utilities/general";
+@import "compass/utilities/sprites";
+@import "icons/*.png";
+
+.app-links{
+    .app-store{
+        display: inline-block;
+        //@include icons-sprite(app-store);
+
+        background: image_url('icons/app-store.png') no-repeat center;
+        background-size: 100%;
+        width: 70px;
+        height: 25px;
+
+        @include transition(all 0.5s linear);
+        &:hover{
+            @include transform(scale(1.1));
+        }
+        @include tablet{
+            width: icons-sprite-width(app-store);
+            height: icons-sprite-height(app-store);
+        }
+    }
+    .google-play{
+        display: inline-block;
+        //@include icons-sprite(google-play);
+
+        background: image_url('icons/google-play.png') no-repeat center;
+        background-size: 100%;
+        width: 70px;
+        height: 25px;
+
+        @include transition(all 0.5s linear);
+        &:hover{
+            @include transform(scale(1.1));
+        }
+        @include tablet{
+            width: icons-sprite-width(google-play);
+            height: icons-sprite-height(google-play);
+        }
+    }
+}
+
+.btn, .btn-submit{
+    background: image_url('bg-button.png') repeat-x;
+    font-size: 17px;
+    height: 37px;
+    line-height: 37px;
+    color: white;
+    font-weight: 800;
+    display: inline-block;
+    text-transform: uppercase;
+    @include text-shadow(rgba(#000, 0.8) 1px 1px 1px);
+    @include box-shadow(rgba(#000, 0.8) 0 0 5px);
+    padding: 0 15px;
+    @include transition(all 0.3 linear);
+    &:hover{
+        color: $color-yellow;
+    }
+}
+
+.floating{
+    display: none;
+    @include desktop{
+        display: block;
+    }
+    @include icons-sprite(floating);
+    width: icons-sprite-width(floating);
+    height: icons-sprite-height(floating);
+    position: absolute;
+    margin-top: 30%;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    padding-left: 75px;
+    text-align: center;
+    img{
+        margin-top: -39px;
+        width: 210px;
+    }
+    .app-links-floating{
+        margin: 5px 0 0;
+        .app-store{
+            display: inline-block;
+            @include icons-sprite(app-store-floating);
+            width: icons-sprite-width(app-store-floating);
+            height: icons-sprite-height(app-store-floating);
+            margin-right: 5px;
+            @include transition(all 0.5s linear);
+            &:hover{
+                @include transform(scale(1.1));
+            }
+        }
+        .google-play{
+            display: inline-block;
+            @include icons-sprite(google-play-floating);
+            width: icons-sprite-width(google-play-floating);
+            height: icons-sprite-height(google-play-floating);
+            @include transition(all 0.5s linear);
+            &:hover{
+                @include transform(scale(1.1));
+            }
+        }
+    }
+}
+
+
+table {
+    &.mobile {
+        @include tablet {
+            display: none;
+        }
+    }
+    &.desktop {
+        display: none;
+        @include tablet {
+            display: table;
+        }
+    }
+}

@@ -1,0 +1,414 @@
+@include keyframes(boy) {
+    0% {
+        @include transform(translateX(100px));
+    }
+    100% {
+        @include transform(translateX(0px));
+    }
+}
+.current .boy, .current .img-boy{
+    @include animation(boy 1s 1);
+}
+
+@include keyframes(girl) {
+    0% {
+        @include transform(translateX(-150px));
+    }
+    100% {
+        @include transform(translateX(0px));
+    }
+}
+.current .girl, .current .img-girl{
+    @include animation(girl 1s 1);
+}
+
+@include keyframes(scale) {
+    0% {
+        @include transform(scale(1));
+    }
+    50% {
+        @include transform(scale(1.2));
+    }
+    100% {
+        @include transform(scale(1));
+    }
+}
+.current .award-1, .current .award-2{
+    @include animation(scale 1s 1);
+}
+
+@include keyframes(scale2) {
+    0% {
+        @include transform(scale(1));
+    }
+    50% {
+        @include transform(scale(0.8));
+    }
+    100% {
+        @include transform(scale(1));
+    }
+}
+.justice, .business, .running, .cutlery{
+    @include animation(scale2 1s infinite);
+}
+
+@include keyframes(analytic) {
+    0% {
+        background-position: left bottom, 1px 3px;
+    }
+    50% {
+        background-position: right bottom, 1px 3px;
+    }
+    100% {
+        background-position: left bottom, 1px 3px;
+    }
+}
+.mb-analytics.current{
+    @include animation(analytic 10s infinite);
+}
+
+
+/* banner */
+@include keyframes(boy-behind) {
+    0% {
+        background-size: 10%;
+    }
+    100% {
+        background-size: 100%;
+    }
+}
+
+.download-app.slick-active > figure, .take-challenge.slick-active > figure{
+    @include animation(boy-behind 1s 1);
+}
+
+@include keyframes(dl-alpha) {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+        @include transform(translateX(-150px));
+    }
+    100% {
+        opacity: 1;
+        @include transform(translateX(0));
+    }
+}
+.download-app .info{
+    opacity: 0;
+}
+.download-links {
+    figure{
+        opacity: 0;
+    }
+    .text{
+        opacity: 0;
+    }
+    .app-store{
+        opacity: 0;
+    }
+    .google-play{
+        opacity: 0;
+    }
+}
+.download-app.slick-active .info{
+    opacity: 1;
+    @include animation(dl-alpha 2s 1);
+}
+.slick-active .download-links {
+    figure{
+        opacity: 1;
+        @include animation(dl-alpha 0.5s 1);
+    }
+    .text{
+        opacity: 1;
+        @include animation(dl-alpha 1.5s 1);
+    }
+    .app-store{
+        opacity: 1;
+        @include animation(dl-alpha 1.5s 1);
+    }
+    .google-play{
+        opacity: 1;
+        @include animation(dl-alpha 2s 1);
+    }
+}
+
+@include keyframes(dl-zoom) {
+    0% {
+        @include transform(scale(1));
+    }
+    60% {
+        @include transform(scale(1.1));
+    }
+    100% {
+        @include transform(scale(1));
+    }
+}
+.take-challenge.slick-active .img1{
+    @include animation(dl-zoom 0.7s 1);
+}
+.take-challenge.slick-active .img2{
+    @include animation(dl-zoom 1.4s 1);
+}
+
+@include keyframes(property-opacity1) {
+    0%{
+        opacity: 0;
+    }
+    20%{
+        opacity: 1;
+    }
+    20% {
+        opacity: 1;
+    }
+}
+@include keyframes(property-opacity2) {
+    0%{
+        opacity: 0;
+    }
+    0%{
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+}
+@include keyframes(property-opacity3) {
+    0%{
+        opacity: 0;
+    }
+    40%{
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+}
+@include keyframes(property-opacity4) {
+    0%{
+        opacity: 0;
+    }
+    60%{
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+    }
+}
+@include keyframes(property-opacity5) {
+    0%{
+        opacity: 0;
+    }
+    80%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@include keyframes(property-text1) {
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    20%{
+        opacity: 1;
+        width: auto;
+    }
+    20% {
+        opacity: 1;
+        width: auto;
+    }
+}
+@include keyframes(property-text2) {
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    40% {
+        opacity: 1;
+        width: auto;
+    }
+}
+@include keyframes(property-text3) {
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    40%{
+        opacity: 0;
+        width: 0;
+    }
+    60% {
+        opacity: 1;
+        width: auto;
+    }
+}
+@include keyframes(property-text4) {
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    60%{
+        opacity: 0;
+        width: 0;
+    }
+    80% {
+        opacity: 1;
+        width: auto;
+    }
+}
+@include keyframes(property-text5) {
+    0%{
+        opacity: 0;
+        width: 0;
+    }
+    80%{
+        opacity: 0;
+        width: 0;
+    }
+    100% {
+        opacity: 1;
+        width: auto;
+    }
+}
+.current {
+    .face {
+        img {
+            @include animation(property-opacity1 2s 1);
+        }
+        i{
+            @include animation(property-text1 2s 1);
+        }
+    }
+    .hair {
+        img {
+            @include animation(property-opacity2 2s 1);
+        }
+        i{
+            @include animation(property-text2 2s 1);
+        }
+    }
+    .hair-color {
+        img {
+            @include animation(property-opacity3 2s 1);
+        }
+        i{
+            @include animation(property-text3 2s 1);
+        }
+    }
+    .skin {
+        img {
+            @include animation(property-opacity4 2s 1);
+        }
+        i{
+            @include animation(property-text4 2s 1);
+        }
+    }
+    .glasses {
+        img {
+            @include animation(property-opacity5 2s 1);
+        }
+        i{
+            @include animation(property-text5 2s 1);
+        }
+    }
+}
+@include keyframes(step1) {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 0;
+        @include transform(translateY(-150px));
+    }
+    30% {
+        opacity: 1;
+        @include transform(translateY(0));
+    }
+}
+@include keyframes(step2) {
+    0% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 0;
+        @include transform(translateY(-50px));
+    }
+    60% {
+        opacity: 1;
+        @include transform(translateY(0));
+    }
+}
+@include keyframes(step3) {
+    0% {
+        opacity: 0;
+    }
+    80% {
+        opacity: 0;
+        @include transform(translateY(-50px));
+    }
+    100% {
+        opacity: 1;
+        @include transform(translateY(0));
+    }
+}
+@include tablet {
+    @include keyframes(step1) {
+        0% {
+            opacity: 0;
+        }
+        10% {
+            opacity: 0;
+            @include transform(translateX(-150px));
+        }
+        30% {
+            opacity: 1;
+            @include transform(translateX(0));
+        }
+    }
+    @include keyframes(step2) {
+        0% {
+            opacity: 0;
+        }
+        40% {
+            opacity: 0;
+            @include transform(translateX(-50px));
+        }
+        60% {
+            opacity: 1;
+            @include transform(translateX(0));
+        }
+    }
+    @include keyframes(step3) {
+        0% {
+            opacity: 0;
+        }
+        80% {
+            opacity: 0;
+            @include transform(translateX(-50px));
+        }
+        100% {
+            opacity: 1;
+            @include transform(translateX(0));
+        }
+    }
+}
+
+.block-first .step{
+    &:nth-child(1) {
+        @include animation(step1 1s 1);
+    }
+    &:nth-child(2) {
+        @include animation(step2 1s 1);
+    }
+    &:nth-child(3) {
+        @include animation(step3 1s 1);
+    }
+}

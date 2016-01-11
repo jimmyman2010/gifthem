@@ -1,0 +1,11 @@
+{
+  "name": "Gif-Them",
+  "description": "Graphic design and online marketing consulting",
+  "main": "",
+  "authors": [
+    "Man Tran <minhman.tran@ogilvy.com>"
+  ],
+  "dependencies": {
+    "foundation": "~5.5.3"
+  }
+}

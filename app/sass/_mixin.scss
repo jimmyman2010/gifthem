@@ -1,0 +1,272 @@
+@import "compass/css3";
+
+@mixin placeholder{
+    &::-webkit-input-placeholder{
+        color: #e6b3ff;
+        font-style: italic;
+    }
+    &:-moz-placeholder{
+        color: #e6b3ff;
+        font-style: italic;
+    }
+    &::-moz-placeholder{
+        color: #e6b3ff;
+        font-style: italic;
+    }
+    &:-ms-input-placeholder{
+        color: #e6b3ff;
+        font-style: italic;
+    }
+}
+
+@mixin optional-at-root($sel) {
+    @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+        @content;
+    }
+}
+
+@mixin placeholder-style {
+    @include optional-at-root('::-webkit-input-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root(':-moz-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root('::-moz-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root(':-ms-input-placeholder') {
+        @content;
+    }
+}
+
+// @mixins
+//
+// We use this to create isosceles triangles
+// $triangle-size - Used to set border-size. No default, set a px or em size.
+// $triangle-color - Used to set border-color which makes up triangle. No default
+// $triangle-direction - Used to determine which direction triangle points. Options: top, bottom, left, right
+@mixin css-triangle($triangle-size, $triangle-color, $triangle-direction) {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border: inset $triangle-size;
+    @if ($triangle-direction == top) {
+        border-color: $triangle-color transparent transparent transparent;
+        border-top-style: solid;
+    }
+    @if ($triangle-direction == bottom) {
+        border-color: transparent transparent $triangle-color transparent;
+        border-bottom-style: solid;
+    }
+    @if ($triangle-direction == left) {
+        border-color: transparent transparent transparent $triangle-color;
+        border-left-style: solid;
+    }
+    @if ($triangle-direction == right) {
+        border-color: transparent $triangle-color transparent transparent;
+        border-right-style: solid;
+    }
+}
+
+@mixin triangle($triangle-size, $triangle-color, $triangle-direction, $other-size) {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+
+    @if ($triangle-direction == top) {
+        border-left: $other-size solid transparent;
+        border-right: $other-size solid transparent;
+
+        border-top: $triangle-size solid $triangle-color;
+    }
+    @if ($triangle-direction == bottom) {
+        border-left: $other-size solid transparent;
+        border-right: $other-size solid transparent;
+
+        border-bottom: $triangle-size solid $triangle-color;
+    }
+    @if ($triangle-direction == left) {
+        border-top: $other-size solid transparent;
+        border-bottom: $other-size solid transparent;
+
+        border-left: $triangle-size solid $triangle-color;
+    }
+    @if ($triangle-direction == right) {
+        border-top: $other-size solid transparent;
+        border-bottom: $other-size solid transparent;
+
+        border-right:$triangle-size solid $triangle-color;
+    }
+}
+
+@mixin responsive($min-width) {
+    @media screen and (min-width: #{$min-width}px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media screen and (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media screen and (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin wide {
+    @media screen and (min-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin decor($width, $height, $img, $position, $l, $t, $r, $b) {
+    display: inline-block;
+    width: $width;
+    height: $height;
+    background: image_url($img) no-repeat $position;
+    position: absolute;
+    @if($l != n) {
+        left: $l;
+    }
+    @if($t != n) {
+        top: $t;
+    }
+    @if($r != n) {
+        right: $r;
+    }
+    @if($b != n) {
+        bottom: $b;
+    }
+}
+
+@function convert-angle($value, $unit) {
+    $convertable-units: deg grad turn rad;
+    $conversion-factors: 1 (10grad/9deg) (1turn/360deg) (3.1415926rad/180deg);
+    @if index($convertable-units, unit($value)) and index($convertable-units, $unit) {
+        @return $value
+             / nth($conversion-factors, index($convertable-units, unit($value)))
+             * nth($conversion-factors, index($convertable-units, $unit));
+    }
+
+    @warn "Cannot convert `#{unit($value)}` to `#{$unit}`.";
+}
+
+/// Test if `$value` is an angle
+/// @param {*} $value - Value to test
+/// @return {Bool}
+@function is-direction($value) {
+    $is-direction: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+    $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+
+    @return $is-direction or $is-angle;
+}
+
+/// Convert a direction to legacy syntax
+/// @param {Keyword | Angle} $value - Value to convert
+/// @require {function} is-direction
+/// @require {function} convert-angle
+@function legacy-direction($value) {
+    @if is-direction($value) == false {
+        @warn "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be an angle or a direction";
+    }
+
+    $conversion-map: (
+            to top          : bottom,
+            to top right    : bottom left,
+            to right top    : left bottom,
+            to right        : left,
+            to bottom right : top left,
+            to right bottom : left top,
+            to bottom       : top,
+            to bottom left  : top right,
+            to left bottom  : right top,
+            to left         : right,
+            to left top     : right bottom,
+            to top left     : bottom right
+    );
+
+    @if map-has-key($conversion-map, $value) {
+        @return map-get($conversion-map, $value);
+    }
+
+    @return 90deg - convert-angle($value, 'deg');
+}
+
+/// Mixin printing a linear-gradient
+/// as well as a plain color fallback
+/// and the `-webkit-` prefixed declaration
+/// @access public
+/// @param {String | List | Angle} $direction - Linear gradient direction
+/// @param {Arglist} $color-stops - List of color-stops composing the gradient
+@mixin linear-gradient($direction, $color-stops...) {
+    @if is-direction($direction) == false {
+        $color-stops: ($direction, $color-stops);
+        $direction: 180deg;
+    }
+
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: -moz-linear-gradient($direction, $color-stops);
+    background: -o-linear-gradient($direction, $color-stops);
+    background: linear-gradient($direction, $color-stops);
+}
+
+@mixin gradient-old($from-color, $to-color) {
+    background-color: mix($from-color, $to-color); /* Fallback */
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from($from-color), to($to-color));
+    background-image: -webkit-linear-gradient(top, $from-color, $to-color);
+    background-image:    -moz-linear-gradient(top, $from-color, $to-color);
+    background-image:      -o-linear-gradient(top, $from-color, $to-color);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
+}
+
+// keyframes - animation
+// demo
+// @include keyframes(slide-down) {
+//    0% { opacity: 1; }
+//    90% { opacity: 0; }
+// }
+//
+// .element {
+//    width: 100px;
+//    height: 100px;
+//    background: black;
+//    @include animation(slide-down 5s 3);
+// }
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}
+
+@mixin animation($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+}
+
+@mixin responsive-bg-image($image-width, $image-height) {
+    background-size: 100%;
+    height: 0;
+    padding-bottom: percentage($image-height / $image-width);
+}

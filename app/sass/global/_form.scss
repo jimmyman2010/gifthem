@@ -1,0 +1,277 @@
+@import "compass/css3";
+@import "compass/utilities/general";
+
+.form-field {
+    padding-top: 23px;
+    .form-label{
+        font-size: 18px;
+        font-weight: 800;
+        font-family: $font-open;
+        margin: 0 0 5px;
+        display: inline-block;
+        color: #4c4c4c;
+    }
+    .input-group{
+        position: relative;
+        min-height: 75px;
+        .input-control {
+            border: 1px solid #959595;
+            background-color: white;
+            height: 56px;
+            line-height: 56px;
+            padding: 0 15px;
+            margin: 0;
+            @include border-radius(5px);
+            width: 100%;
+            outline: none;
+            font-family: $font-open;
+            font-weight: 700;
+            color: #808080;
+        }
+        select.input-control{
+            padding: 0 50px 0 15px;
+            background: image_url('select.png') no-repeat right center white;
+            cursor: pointer;
+        }
+        .radio{
+            @include clearfix;
+            color: #4c4c4c;
+            font-size: 14px;
+            font-weight: 700;
+            .box{
+                float: left;
+                @include icons-sprite(radio);
+                width: icons-sprite-width(radio);
+                height: icons-sprite-height(radio);
+                margin-right: 14px;
+            }
+            .copy{
+                float: left;
+                margin-top: 2px;
+            }
+            input{
+                visibility: hidden;
+                &:checked ~ .box{
+                    @include icons-sprite(radio-checked);
+                }
+            }
+        }
+        .checkbox{
+            @include clearfix;
+            color: #4c4c4c;
+            font-size: 14px;
+            font-weight: 600;
+            .box{
+                float: left;
+                @include icons-sprite(checkbox);
+                width: icons-sprite-width(checkbox);
+                height: icons-sprite-height(checkbox);
+                margin-right: 14px;
+            }
+            .copy{
+                float: left;
+                margin-top: 3px;
+                a{
+                    color: #1aa135;
+                    font-weight: 800;
+                    text-decoration: underline;
+                }
+            }
+            input{
+                visibility: hidden;
+                &:checked ~ .box{
+                    @include icons-sprite(checkbox-checked);
+                }
+            }
+        }
+    }
+}
+[data-abide] .error small.error{
+    clear: left;
+    margin-bottom: 0;
+    background: none;
+    padding: 0;
+    color: #e63741;
+    border: none;
+}
+html .error{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    line-height: inherit;
+}
+
+.sign-up-fields {
+    text-align: center;
+    label{
+        font-size: 18px;
+        font-weight: 800;
+        font-family: $font-open;
+        margin: 0 0 5px;
+        display: inline-block;
+        color: #4c4c4c;
+        text-transform: uppercase;
+    }
+    .wrap-field{
+        margin-top: 28px;
+        text-align: left;
+    }
+    .input-text.input-text-2 {
+        input {
+            border: 1px solid #959595;
+            background-color: white;
+            height: 56px;
+            line-height: 56px;
+            padding: 0 15px;
+            margin: 0;
+            @include border-radius(5px);
+            width: 100%;
+            outline: none;
+            font-family: $font-open;
+            font-weight: 700;
+            color: #808080;
+        }
+    }
+
+    .select-wrapper.select-4{
+        border: 1px solid #959595;
+        @include border-radius(5px);
+        height: 56px;
+        line-height: 56px;
+        span, select{
+            height: 50px;
+            line-height: 50px;
+            outline: none;
+            font-family: $font-open;
+            font-weight: 700;
+            color: #808080;
+        }
+        .fa{
+            top: 12px;
+            color: #1AA135;
+        }
+    }
+    .verify-wrapper{
+        label{
+            text-transform: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+    }
+    .checkbox-wrapper {
+        @include icons-sprite(checkbox);
+        width: icons-sprite-width(checkbox);
+        height: icons-sprite-height(checkbox);
+        @include transition(none);
+    }
+    .checkbox-wrapper.checkbox-2.checked{
+        @include icons-sprite(checkbox-checked);
+    }
+    .chkbox-desc{
+        text-transform: none;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 5px 0 0;
+    }
+    .sign-up-chkbox > div{
+        margin-top: 5px;
+        &:first-child{
+            margin-top: 0;
+        }
+    }
+
+    .radio-wrapper.radio-2{
+        @include transition(none);
+        float: left;
+        margin-right: 10px;
+        @include icons-sprite(radio);
+        width: icons-sprite-width(radio);
+        height: icons-sprite-height(radio);
+        &.radio-selected{
+            @include icons-sprite(radio-checked);
+        }
+    }
+    .type-noted{
+        font-weight: 700;
+        .required-text{
+            color: #1aa135;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+        .wrap-field {
+            margin-top: 0;
+            margin-left: 0;
+            margin-right: 0;
+            > .columns {
+                padding-left: 30px;
+                padding-right: 30px;
+                label {
+                    font-size: 12px;
+                }
+                .input-text {
+                    height: 28px;
+                    margin-bottom: 12px;
+                    input {
+                        height: 28px;
+                        line-height: 28px;
+                        font-size: 12px;
+                    }
+                }
+                .dob-wrapper {
+                    margin-bottom: 12px;
+                    .select-wrapper {
+                        height: 28px;
+                        line-height: 28px;
+                        span {
+                            height: 28px;
+                            line-height: 28px;
+                            top: 0;
+                            font-size: 12px;
+                        }
+                        select {
+                            height: 28px;
+                            line-height: 28px;
+                        }
+                        .fa {
+                            top: 1px;
+                            right: 1px;
+                            width: 24px;
+                            height: 24px;
+                            line-height: 24px;
+                        }
+                    }
+                    .dob-col-1 {
+                        padding-right: 6px;
+                    }
+                    .dob-col-2 {
+                        padding-left: 2px;
+                        padding-right: 2px;
+                    }
+                    .dob-col-3 {
+                        padding-left: 6px;
+                    }
+                }
+            }
+
+            &.sign-up-chkbox {
+                .checkbox-wrapper {
+                    float: left;
+                    margin-right: 10px;
+                }
+                label {
+                    float: left;
+                    max-width: 84%;
+                }
+            }
+            &.type-noted {
+                font-size: 12px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
+        .btn-submit {
+            margin-bottom: 20px;
+        }
+    }
+}
