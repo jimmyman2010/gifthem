@@ -47,9 +47,9 @@ gulp.task('html', function() {
 });
 
 // watch Sass files for changes, run the Sass preprocessor with the 'sass' task and reload
-gulp.task('serve', ['fonts', 'compass'], function() {
+gulp.task('serve', ['compass'], function() {
     browserSync({
-        port: 5555,
+        port: 8787,
         server: {
             baseDir: ['.tmp', 'app'],
             routes: {
