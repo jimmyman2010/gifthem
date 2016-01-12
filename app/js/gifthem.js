@@ -14,7 +14,7 @@ var cropper;
         document.querySelector('#filesToUpload').onchange = function(){
             var files = this.files;
             for(var i = 0; i < files.length; i++) {
-                resizeAndCrop(files[i], MAX_WIDTH, MAX_HEIGHT);
+                initialFile(files[i], MAX_WIDTH, MAX_HEIGHT);
             }
 
             document.querySelector('#gifTheme').onclick = function() {
@@ -56,7 +56,7 @@ function generateUUID() {
     return uuid;
 }
 
-function resizeAndCrop(file, MAX_WIDTH, MAX_HEIGHT) {
+function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
     'use strict';
     var reader = new FileReader();
     reader.onloadend = function() {
@@ -64,33 +64,16 @@ function resizeAndCrop(file, MAX_WIDTH, MAX_HEIGHT) {
         tempImg.src = reader.result;
         tempImg.onload = function() {
             'use strict';
-            var tempW = tempImg.width;
-            var tempH = tempImg.height;
-            if (tempW > tempH) {
-                if (tempW > MAX_WIDTH) {
-                    tempW *= MAX_HEIGHT / tempH;
-                    tempH = MAX_HEIGHT;
-                }
-            } else {
-                if (tempH > MAX_HEIGHT) {
-                    tempH *= MAX_WIDTH / tempW;
-                    tempW = MAX_WIDTH;
-                }
-            }
 
-            var canvas = document.createElement('canvas');
-            canvas.width = MAX_WIDTH;
-            canvas.height = MAX_HEIGHT;
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(this, -(tempW - MAX_WIDTH)/2, -(tempH - MAX_HEIGHT)/2, tempW, tempH);
-            var dataURL = canvas.toDataURL("image/jpeg");
+            var dataURL = resizeAndCrop(tempImg, MAX_WIDTH, MAX_HEIGHT);
 
-            var div = document.createElement('div');
             var id = 'item-' + generateUUID();
             var img = 'img-' + generateUUID();
             var mainImg = 'mainImg-' + generateUUID();
             var popup = 'popup-' + generateUUID();
             var preview = 'preview-' + generateUUID();
+
+            var div = document.createElement('div');
             div.className = 'item';
             div.id = id;
             div.innerHTML = '' +
@@ -99,26 +82,51 @@ function resizeAndCrop(file, MAX_WIDTH, MAX_HEIGHT) {
                 '<a class="crop-image" href="javascript:void(0);" onclick="cropImage(\'' + popup + '\', \'' + img + '\', \'' + preview + '\');" rel="nofollow">Crop</a>' +
                 '<a class="delete-image" href="javascript:void(0);" onclick="deleteImage(\'' + id + '\');" rel="nofollow">Delete</a>' +
                 '<div class="popup-image" id="' + popup + '">' +
-                '<div class="popup-content">' +
-                '<div class="inner">' +
-                '<img id="' + img + '" src="' + this.src + '" alt="" />' +
-                '</div>' +
-                '<div class="controls">' +
-                '<div class="preview">' +
-                '<figure id="' + preview + '"></figure>' +
-                '</div>' +
-                '<button onclick="cropIt(\'' + mainImg + '\', \'' + popup + '\');">OK</button>' +
-                '<button onclick="closePopup(\'' + popup + '\');">Cancel</button>' +
-                '</div>' +
-                '<a class="popup-close" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');" rel="nofollow">x</a>' +
-                '</div>' +
-                '<a class="overlay" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');"></a>' +
+                    '<div class="popup-content">' +
+                        '<div class="inner">' +
+                            '<img id="' + img + '" src="' + this.src + '" alt="" />' +
+                        '</div>' +
+                        '<div class="controls">' +
+                            '<div class="preview">' +
+                                '<figure id="' + preview + '"></figure>' +
+                            '</div>' +
+                            '<button onclick="cropIt(\'' + mainImg + '\', \'' + popup + '\');">OK</button>' +
+                            '<button onclick="closePopup(\'' + popup + '\');">Cancel</button>' +
+                        '</div>' +
+                        '<a class="popup-close" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');" rel="nofollow">x</a>' +
+                    '</div>' +
+                    '<a class="overlay" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');"></a>' +
                 '</div>';
             document.querySelector('#filesInfo').appendChild(div);
         }
 
     };
     reader.readAsDataURL(file);
+}
+
+function resizeAndCrop(tempImg, MAX_WIDTH, MAX_HEIGHT){
+    'use strict';
+    var tempW = tempImg.width;
+    var tempH = tempImg.height;
+    if (tempW > tempH) {
+        if (tempW > MAX_WIDTH) {
+            tempW *= MAX_HEIGHT / tempH;
+            tempH = MAX_HEIGHT;
+        }
+    } else {
+        if (tempH > MAX_HEIGHT) {
+            tempH *= MAX_WIDTH / tempW;
+            tempW = MAX_WIDTH;
+        }
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = MAX_WIDTH;
+    canvas.height = MAX_HEIGHT;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(tempImg, -(tempW - MAX_WIDTH)/2, -(tempH - MAX_HEIGHT)/2, tempW, tempH);
+
+    return canvas.toDataURL("image/jpeg");
 }
 
 function cropImage(popup, img, preview){
@@ -158,28 +166,8 @@ function replaceImage(ele, mainImg, img){
         tempImg.src = reader.result;
         tempImg.onload = function() {
             'use strict';
-            var tempW = tempImg.width;
-            var tempH = tempImg.height;
-            if (tempW > tempH) {
-                if (tempW > MAX_WIDTH) {
-                    tempW *= MAX_HEIGHT / tempH;
-                    tempH = MAX_HEIGHT;
-                }
-            } else {
-                if (tempH > MAX_HEIGHT) {
-                    tempH *= MAX_WIDTH / tempW;
-                    tempW = MAX_WIDTH;
-                }
-            }
 
-            var canvas = document.createElement('canvas');
-            canvas.width = MAX_WIDTH;
-            canvas.height = MAX_HEIGHT;
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(this, -(tempW - MAX_WIDTH)/2, -(tempH - MAX_HEIGHT)/2, tempW, tempH);
-            var dataURL = canvas.toDataURL("image/jpeg");
-
-            mainEle.src = dataURL;
+            mainEle.src = resizeAndCrop(tempImg, MAX_WIDTH, MAX_HEIGHT);
             imgEle.src = this.src;
         }
 
