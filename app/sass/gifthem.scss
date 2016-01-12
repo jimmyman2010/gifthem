@@ -6,6 +6,7 @@
 //@import "global/form";
 //@import "global/retina-background-image";
 //@import "global/retina-sprites";
+@import "global/common";
 
 body{
     font-family: $font-open;
@@ -14,4 +15,77 @@ body{
 
 @import "global/global";
 //@import "global/animate";
+.gif-them {
+    .image-list{
+        @include clearfix();
+    }
+    .item {
+        width: 100px;
+        position: relative;
+        float: left;
+        margin: 5px;
+    }
+}
 
+.popup-image{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 990;
+    &.open{
+        display: block;
+    }
+    .overlay{
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: default;
+    }
+    .popup-content{
+        padding: 10px;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -250px 0 0 -300px;
+    }
+    .inner{
+        width: 500px;
+        height: 500px;
+        float: left;
+    }
+    .controls{
+        float: right;
+        width: 150px;
+        height: 500px;
+        margin-left: 10px;
+        .preview{
+            background-color: #e3e3e3;
+            figure {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+                overflow: hidden;
+            }
+        }
+    }
+    .popup-close{
+        text-decoration: none;
+        color: white;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        @include border-radius(30px);
+        background: $color-red;
+        text-align: center;
+        @include box-shadow(rgba(black, 0.8) 0 3px 0);
+        position: absolute;
+        top: -10px;
+        right: -10px;
+    }
+}
