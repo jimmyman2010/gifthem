@@ -11,33 +11,28 @@ var cropper;
     'use strict';
     if (window.File && window.FileReader && window.FileList && window.Blob) {
 
-        document.querySelector('#filesToUpload').onchange = function(){
+        document.querySelector('#filesToUpload').addEventListener('change', function(){
             var files = this.files;
             for(var i = 0; i < files.length; i++) {
                 initialFile(files[i], MAX_WIDTH, MAX_HEIGHT);
             }
+        }, false);
+        document.querySelector('#gifTheme').addEventListener('click', function() {
+            var imgTags = Array.apply(null, document.querySelectorAll('#filesInfo .main-img'));
 
-            document.querySelector('#gifTheme').onclick = function() {
-                var imgTags = Array.apply(null, document.querySelectorAll('#filesInfo .main-img'));
-                var imgList = [];
-                imgTags.forEach(function(img){
-                    imgList.push(img.src);
-                });
-
-                gifshot.createGIF({
-                    'gifWidth': MAX_WIDTH,
-                    'gifHeight': MAX_HEIGHT,
-                    'images': imgList,
-                    'interval': 1
-                }, function (obj) {
-                    if (!obj.error) {
-                        var animatedImage = document.createElement('img');
-                        animatedImage.src = obj.image;
-                        document.body.appendChild(animatedImage);
-                    }
-                });
-            }
-        };
+            gifshot.createGIF({
+                'gifWidth': MAX_WIDTH,
+                'gifHeight': MAX_HEIGHT,
+                'images': imgTags,
+                'interval': 1
+            }, function (obj) {
+                if (!obj.error) {
+                    var animatedImage = document.createElement('img');
+                    animatedImage.src = obj.image;
+                    document.body.appendChild(animatedImage);
+                }
+            });
+        }, false);
     } else {
         alert('The File APIs are not fully supported in this browser.');
     }
@@ -48,12 +43,11 @@ var cropper;
 function generateUUID() {
     'use strict';
     var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = (d + Math.random()*16)%16 | 0;
         d = Math.floor(d/16);
         return (c=='x' ? r : (r&0x3|0x8)).toString(16);
     });
-    return uuid;
 }
 
 function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
@@ -106,25 +100,85 @@ function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
 
 function resizeAndCrop(tempImg, MAX_WIDTH, MAX_HEIGHT){
     'use strict';
+    var canvas = document.createElement('canvas');
+    canvas.width = MAX_WIDTH;
+    canvas.height = MAX_HEIGHT;
+    var ctx = canvas.getContext("2d");
+
     var tempW = tempImg.width;
     var tempH = tempImg.height;
-    if (tempW > tempH) {
-        if (tempW > MAX_WIDTH) {
+
+    if(tempW > MAX_WIDTH || tempH > MAX_HEIGHT) {
+        if ((tempW * MAX_HEIGHT / tempH) >= MAX_WIDTH) {
             tempW *= MAX_HEIGHT / tempH;
             tempH = MAX_HEIGHT;
-        }
-    } else {
-        if (tempH > MAX_HEIGHT) {
+        } else {
             tempH *= MAX_WIDTH / tempW;
             tempW = MAX_WIDTH;
         }
     }
 
-    var canvas = document.createElement('canvas');
-    canvas.width = MAX_WIDTH;
-    canvas.height = MAX_HEIGHT;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(tempImg, -(tempW - MAX_WIDTH)/2, -(tempH - MAX_HEIGHT)/2, tempW, tempH);
+    var x = -(tempW - MAX_WIDTH)/2;
+    var y = -(tempH - MAX_HEIGHT)/2;
+
+    var orientation;
+    EXIF.getData(tempImg, function() {
+        orientation = EXIF.getTag(tempImg, 'Orientation');
+    });
+    if (orientation && orientation <= 8 && orientation >= 2) {
+        switch (orientation) {
+            case 2:
+                // horizontal flip
+                ctx.translate(tempW, 0);
+                ctx.scale(-1, 1);
+                break;
+            case 3:
+                // 180 rotate left
+                ctx.translate(tempW, tempH);
+                ctx.rotate(Math.PI);
+                break;
+            case 4:
+                // vertical flip
+                ctx.translate(0, tempH);
+                ctx.scale(1, -1);
+                break;
+            case 5:
+                // vertical flip + 90 rotate right
+                ctx.rotate(0.5 * Math.PI);
+                ctx.scale(1, -1);
+
+                x = -(tempW - MAX_HEIGHT)/2;
+                y = (tempH - MAX_WIDTH)/2;
+                break;
+            case 6:
+                // 90 rotate right
+                ctx.rotate(0.5 * Math.PI);
+                ctx.translate(0, -(tempH));
+
+                x = -(tempW - MAX_HEIGHT)/2;
+                y = (tempH - MAX_WIDTH)/2;
+                break;
+            case 7:
+                // horizontal flip + 90 rotate right
+                ctx.rotate(0.5 * Math.PI);
+                ctx.translate(tempW, -(tempH - 50));
+                ctx.scale(-1, 1);
+
+                x = -(tempW - MAX_HEIGHT)/2;
+                y = (tempH - MAX_WIDTH)/2;
+                break;
+            case 8:
+                // 90 rotate left
+                ctx.rotate(-0.5 * Math.PI);
+                ctx.translate(-tempW, 0);
+
+                x = -(tempW - MAX_HEIGHT)/2;
+                y = (tempH - MAX_WIDTH)/2;
+                break;
+        }
+    }
+
+    ctx.drawImage(tempImg, x, y, tempW, tempH);
 
     return canvas.toDataURL("image/jpeg");
 }
