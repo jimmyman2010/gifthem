@@ -11,6 +11,7 @@
 body{
     font-family: $font-open;
     font-size: 14px;
+    margin: 0;
 }
 
 @import "global/global";
@@ -20,10 +21,13 @@ body{
         @include clearfix();
     }
     .item {
-        width: 100px;
+        width: 90px;
         position: relative;
         float: left;
         margin: 5px;
+        @include tablet{
+            width: 100px;
+        }
     }
 }
 
@@ -49,28 +53,65 @@ body{
         padding: 10px;
         background-color: white;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -250px 0 0 -300px;
+        top: 0;
+        left: 0;
+        @include tablet{
+            top: 50%;
+            left: 50%;
+            margin: -250px 0 0 -300px;
+        }
     }
     .inner{
-        width: 500px;
-        height: 500px;
-        float: left;
+        width: 300px;
+        height: 300px;
+        @include tablet{
+            float: left;
+            width: 500px;
+            height: 500px;
+        }
     }
     .controls{
-        float: right;
-        width: 150px;
-        height: 500px;
-        margin-left: 10px;
+        width: 3000px;
+        height: 300px;
+        margin: 10px 0 0;
+        @include tablet{
+            float: right;
+            width: 150px;
+            height: 500px;
+            margin: 0 0 0 10px;
+        }
         .preview{
+            float: left;
             background-color: #e3e3e3;
-            figure {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin: 0 10px 0 0;
+            @include tablet{
+                float: none;
                 width: 150px;
                 height: 150px;
+                margin: 0 0 10px;
+            }
+            > img{
+                max-height: 100%;
+            }
+            figure {
+                width: 100px;
+                height: 100px;
                 margin: 0 auto;
                 overflow: hidden;
+                @include tablet{
+                    width: 150px;
+                    height: 150px;
+                }
             }
+        }
+    }
+    .action-crop{
+        button{
+            display: block;
+            margin: 0 0 10px;
         }
     }
     .popup-close{

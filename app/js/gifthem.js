@@ -64,6 +64,7 @@ function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
             var id = 'item-' + generateUUID();
             var img = 'img-' + generateUUID();
             var mainImg = 'mainImg-' + generateUUID();
+            var curPreview = 'curPreview-' + generateUUID();
             var popup = 'popup-' + generateUUID();
             var preview = 'preview-' + generateUUID();
 
@@ -73,7 +74,7 @@ function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
             div.innerHTML = '' +
                 '<img class="main-img" id="' + mainImg + '" src="' + dataURL + '" alt="" />' +
                 '<input class="replace-image" type="file" onchange="replaceImage(this, \'' + mainImg + '\', \'' + img + '\')" />' +
-                '<a class="crop-image" href="javascript:void(0);" onclick="cropImage(\'' + popup + '\', \'' + img + '\', \'' + preview + '\');" rel="nofollow">Crop</a>' +
+                '<a class="crop-image" href="javascript:void(0);" onclick="cropImage(\'' + popup + '\', \'' + img + '\', \'' + preview + '\', \'' + mainImg + '\', \'' + curPreview + '\');" rel="nofollow">Crop</a>' +
                 '<a class="delete-image" href="javascript:void(0);" onclick="deleteImage(\'' + id + '\');" rel="nofollow">Delete</a>' +
                 '<div class="popup-image" id="' + popup + '">' +
                     '<div class="popup-content">' +
@@ -81,11 +82,14 @@ function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
                             '<img id="' + img + '" src="' + this.src + '" alt="" />' +
                         '</div>' +
                         '<div class="controls">' +
+                            '<div class="preview" id="' + curPreview + '"></div>' +
                             '<div class="preview">' +
                                 '<figure id="' + preview + '"></figure>' +
                             '</div>' +
-                            '<button onclick="cropIt(\'' + mainImg + '\', \'' + popup + '\');">OK</button>' +
-                            '<button onclick="closePopup(\'' + popup + '\');">Cancel</button>' +
+                            '<div class="action-crop">' +
+                                '<button onclick="cropIt(\'' + mainImg + '\', \'' + popup + '\');">OK</button>' +
+                                '<button onclick="closePopup(\'' + popup + '\');">Cancel</button>' +
+                            '</div>' +
                         '</div>' +
                         '<a class="popup-close" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');" rel="nofollow">x</a>' +
                     '</div>' +
@@ -183,9 +187,10 @@ function resizeAndCrop(tempImg, MAX_WIDTH, MAX_HEIGHT){
     return canvas.toDataURL("image/jpeg");
 }
 
-function cropImage(popup, img, preview){
+function cropImage(popup, img, preview, mainImg, curPreview){
     'use strict';
     document.querySelector('#' + popup).className = 'popup-image open';
+    document.querySelector('#' + curPreview).innerHTML = '<img src="' + document.querySelector('#' + mainImg).src + '" alt="" />';
 
     cropper = new Cropper(document.querySelector('#' + img), {
         viewMode: 1,
