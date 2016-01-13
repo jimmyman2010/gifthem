@@ -29,6 +29,15 @@ body{
             width: 100px;
         }
     }
+    .replace-image{
+        overflow: hidden;
+        width: 100%;
+    }
+    .crop-image, .delete-image{
+        display: inline-block;
+        margin: 0 5px;
+        font-size: 12px;
+    }
 }
 
 .popup-image{
@@ -53,11 +62,12 @@ body{
         padding: 10px;
         background-color: white;
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 50%;
+        left: 50%;
+        width: 320px;
+        margin: -210px 0 0 -160px;
         @include tablet{
-            top: 50%;
-            left: 50%;
+            width: auto;
             margin: -250px 0 0 -300px;
         }
     }
@@ -71,8 +81,8 @@ body{
         }
     }
     .controls{
-        width: 3000px;
-        height: 300px;
+        width: 300px;
+        height: 100px;
         margin: 10px 0 0;
         @include tablet{
             float: right;
