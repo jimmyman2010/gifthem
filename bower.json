@@ -6,7 +6,6 @@
     "Man Tran <minhman.tran@ogilvy.com>"
   ],
   "dependencies": {
-    "foundation": "~5.5.3",
     "cropperjs": "0.5.5"
   }
 }
