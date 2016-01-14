@@ -6,6 +6,7 @@
 var MAX_WIDTH = 200;
 var MAX_HEIGHT = 300;
 var cropper;
+var sortable;
 
 (function(){
     'use strict';
@@ -95,7 +96,14 @@ function initialFile(file, MAX_WIDTH, MAX_HEIGHT) {
                     '</div>' +
                     '<a class="overlay" href="javascript:void(0);" onclick="closePopup(\'' + popup + '\');"></a>' +
                 '</div>';
-            document.querySelector('#filesInfo').appendChild(div);
+
+            var listEle = document.querySelector('#filesInfo');
+            listEle.appendChild(div);
+
+            if(sortable) {
+                sortable.destroy();
+            }
+            sortable = Sortable.create(listEle);
         }
 
     };
